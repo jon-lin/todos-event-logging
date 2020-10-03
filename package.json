@@ -6,11 +6,16 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "apollo-server": "^2.18.1",
+    "graphql": "^15.3.0",
+    "mongodb": "^3.6.2",
+    "nodemon": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
   },
   "scripts": {
+    "start-server": "nodemon --inspect=127.0.0.1:2000 server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
