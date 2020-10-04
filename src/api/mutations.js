@@ -9,3 +9,13 @@ export const UPDATE_TODO = gql`
     }
   }
 `;
+
+export const CREATE_TODO = gql`
+  mutation CreateTodo {
+    createTodo {
+      _id
+      description
+      isDone
+    }
+  }
+`;
