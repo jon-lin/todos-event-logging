@@ -1,19 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import _ from 'lodash';
 
 import TodoItem from './TodoItem'
 
-const GET_TODOS = gql`
-  query GetTodos {
-    todos {
-      _id
-      description
-      isDone
-    }
-  }
-`;
+import { GET_TODOS } from '../api/queries'
 
 const Panel = styled.div({
   padding: 24,
