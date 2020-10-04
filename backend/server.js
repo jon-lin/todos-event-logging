@@ -1,5 +1,7 @@
-const { MongoClient, ObjectId } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb');
 const { ApolloServer, gql } = require('apollo-server');
+
+const Todo = require('./Todo')
 
 const typeDefs = gql`
   type Query {
@@ -38,31 +40,26 @@ const resolvers = {
     },
   },
   Mutation: {
-    createTodo: (parent, args, context, info) => {
+    createTodo: async (parent, args, context, info) => {
       const { db } = context
-
-      return db.collection('todos')
-        .insertOne({ description: '', isDone: false })
-        .then(res => res.ops[0])
+      const todo = await Todo.init({ data: {}, db })
+      return todo.create(null, new Date())
     },
-    updateTodo: (parent, args, context, info) => {
+    updateTodo: async (parent, args, context, info) => {
       const { input: { _id, description, isDone } } = args
       const { db } = context
 
-      return db.collection('todos')
-        .findOneAndUpdate(
-          { _id: ObjectId(_id) },
-          { $set: { description, isDone } },
-          { returnOriginal: false },
-        )
-        .then(({ value }) => value)
-    },
-    deleteTodo: (parent, { input: { _id } }, context, info) => {
-      const { db } = context
+      const todo = await Todo.init({ 
+        data: { _id, description, isDone },
+        db,
+      })
 
-      return db.collection('todos')
-        .findOneAndDelete({ _id: ObjectId(_id) })
-        .then(({ value }) => value)
+      return todo.update(null, new Date())
+    },
+    deleteTodo: async (parent, { input: { _id } }, context, info) => {
+      const { db } = context
+      const todo = await Todo.init({ data: { _id }, db })
+      return todo.delete()
     },
   }
 };

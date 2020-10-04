@@ -20,7 +20,7 @@
     "react-scripts": "3.4.3"
   },
   "scripts": {
-    "start-server": "nodemon --inspect=127.0.0.1:2000 server.js",
+    "start-server": "nodemon --inspect=127.0.0.1:2000 backend/server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
