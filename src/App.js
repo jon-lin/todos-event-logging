@@ -1,9 +1,33 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import TodosPanel from './TodosPanel/TodosPanel';
+import TodosPanel from './TodosPanel';
+import UserToggle from './UserToggle';
 import './index.css';
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { 
+  ApolloClient, 
+  createHttpLink, 
+  InMemoryCache, 
+  ApolloProvider 
+} from '@apollo/client';
+
+import { setContext } from '@apollo/client/link/context';
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000/',
+});
+
+const headersLink = setContext((_, { headers }) => {
+  const username = localStorage.getItem('currentUsername');
+  const userId = localStorage.getItem('currentUserId');
+
+  return {
+    headers: {
+      ...headers,
+      user_info: JSON.stringify({ username, userId: Number(userId) }),
+    }
+  }
+});
 
 const TodosPage = styled.div({
   display: 'flex',
@@ -14,7 +38,7 @@ const TodosPage = styled.div({
 })
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/',
+  link: headersLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -22,6 +46,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <TodosPage>
+        <UserToggle />
         <TodosPanel />
       </TodosPage>
     </ApolloProvider>

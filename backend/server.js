@@ -1,4 +1,4 @@
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const { ApolloServer, gql } = require('apollo-server');
 
 const Todo = require('./Todo')
@@ -72,7 +72,15 @@ MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true }, (
   const server = new ApolloServer({ 
     typeDefs, 
     resolvers,
-    context: () => ({ db: client.db('todos_app') }),
+    context: ({ req }) => {
+      const { username, userId } = JSON.parse(req.headers.user_info)
+      
+      return {
+        db: client.db('todos_app'),
+        username, 
+        userId,
+      }
+    },
   });
 
   server.listen().then(({ url }) => {
