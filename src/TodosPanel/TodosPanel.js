@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import TodoItem from './TodoItem';
 
-import { GET_TODOS } from '../api/queries';
+import { GET_TODOS, GET_EVENTS } from '../api/queries';
 import { CREATE_TODO } from '../api/mutations';
 
 const Panel = styled.div({
@@ -46,7 +46,7 @@ const TodosPanel = () => {
 
   const [createTodo] = useMutation(
     CREATE_TODO,
-    { refetchQueries: [{ query: GET_TODOS }] }
+    { refetchQueries: [{ query: GET_TODOS }, { query: GET_EVENTS }] }
   );
 
   if (loading) return <p>Loading...</p>;
