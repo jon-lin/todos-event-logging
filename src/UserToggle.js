@@ -11,13 +11,16 @@ const USER_B = {
   userId: 2,
 }
 
+const Wrapper = styled.div({
+  position: 'absolute',
+  top: 24,
+  left: 24,
+})
+
 const ToggleContainer = styled.div({
   border: '3px solid black',
   borderRadius: 8,
   display: 'flex',
-  position: 'absolute',
-  top: 24,
-  left: 24,
 })
 
 const UserButton = styled.button({
@@ -36,20 +39,24 @@ const UserToggle = () => {
   localStorage.setItem('currentUserId', selectedUser.userId)
 
   return (
-    <ToggleContainer>
-      <UserButton 
-        isSelected={selectedUser.userId === USER_A.userId}
-        onClick={() => selectUser(USER_A)}
-      >
-        Alice
-      </UserButton>
-      <UserButton 
-        isSelected={selectedUser.userId === USER_B.userId}
-        onClick={() => selectUser(USER_B)}
-      >
-        Bob
-      </UserButton>
-    </ToggleContainer>
+    <Wrapper>
+      <p style={{ marginBottom: 12 }}>Logged in as:</p>
+      <ToggleContainer>
+        
+        <UserButton 
+          isSelected={selectedUser.userId === USER_A.userId}
+          onClick={() => selectUser(USER_A)}
+        >
+          Alice
+        </UserButton>
+        <UserButton 
+          isSelected={selectedUser.userId === USER_B.userId}
+          onClick={() => selectUser(USER_B)}
+        >
+          Bob
+        </UserButton>
+      </ToggleContainer>
+    </Wrapper>
   )
 }
 
