@@ -9,12 +9,12 @@ import { GET_TODOS, GET_EVENTS } from '../api/queries';
 import { CREATE_TODO } from '../api/mutations';
 
 const Panel = styled.div({
-  padding: 24,
   height: '70%',
   width: 300,
   border: '1px solid black',
   overflowY: 'auto',
   marginRight: 24,
+  padding: '0 24px',
 });
 
 const TopBar = styled.div({
@@ -22,6 +22,11 @@ const TopBar = styled.div({
   justifyContent: 'space-between',
   marginBottom: 24,
   alignItems: 'center',
+  padding: '24px 0',
+  position: 'sticky',
+  top: 0,
+  background: 'white',
+  zIndex: 1,
 })
 
 const CreateTodoButton = styled.button({
