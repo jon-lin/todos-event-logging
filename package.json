@@ -11,6 +11,8 @@
     "@testing-library/user-event": "^7.1.2",
     "apollo-server": "^2.18.1",
     "graphql": "^15.3.0",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-type-json": "^0.3.2",
     "lodash": "^4.17.20",
     "mongodb": "^3.6.2",
     "nodemon": "^2.0.4",

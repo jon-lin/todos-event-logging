@@ -1,5 +1,7 @@
 const { MongoClient } = require('mongodb');
 const { ApolloServer, gql } = require('apollo-server');
+const GraphQLJSON = require('graphql-type-json')
+const { GraphQLDateTime } = require('graphql-iso-date')
 
 const Todo = require('./Todo')
 const TodoCreateEvent = require('./TodoCreateEvent')
@@ -8,14 +10,29 @@ const TodoDeleteEvent = require('./TodoDeleteEvent')
 const EventProcessor = require('./Event/EventProcessor')
 
 const typeDefs = gql`
+  scalar JSON
+
+  scalar DateTime
+
   type Query {
-    todos: [Todo]
+    todos: [Todo!]!
+    events: [Event!]!
   }
 
   type Todo {
     _id: ID!
     description: String
     isDone: Boolean
+  }
+
+  type Event {
+    _id: ID!
+    timestamp: DateTime!
+    userId: Int!
+    username: String!
+    action: String!
+    entityId: String!
+    deltas: [JSON!]!
   }
 
   type Mutation {
@@ -36,11 +53,21 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+  JSON: GraphQLJSON,
+  DateTime: GraphQLDateTime,
   Query: {
     todos: (parent, args, context, info) => {
       const { db } = context
       
       return db.collection('todos').find().toArray()
+    },
+    events: (parent, args, context, info) => {
+      const { db } = context
+      
+      return db.collection('events')
+        .find()
+        .sort({ timestamp: -1 })
+        .toArray()
     },
   },
   Mutation: {
