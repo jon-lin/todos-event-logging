@@ -4,7 +4,7 @@ import ContentEditable from 'react-contenteditable'
 import styled from '@emotion/styled';
 
 import { GET_TODOS } from '../api/queries';
-import { UPDATE_TODO } from '../api/mutations';
+import { UPDATE_TODO, DELETE_TODO } from '../api/mutations';
 
 let GLOBAL_TIMER_ID = null;
 
@@ -20,9 +20,21 @@ const CheckboxInput = styled.input({
 
 const TextInput = styled(ContentEditable)({
   flex: '1 1 auto',
+  wordBreak: 'break-word',
 }, ({ isDone }) => ({
   textDecoration: isDone ? 'line-through' : 'none',
 }));
+
+const DeleteButton = styled.button({
+  padding: '0 8px',
+  position: 'relative',
+  top: 2,
+  height: 16,
+  cursor: 'pointer',
+  ':hover': {
+    background: 'lightgray',
+  },
+})
 
 const TodoItem = ({ _id, description, isDone }) => {
   const text = useRef(description)
@@ -36,6 +48,12 @@ const TodoItem = ({ _id, description, isDone }) => {
         isDone: done,
       } 
     },
+    refetchQueries: [{ query: GET_TODOS }],
+    onError: alert,
+  })
+
+  const [deleteTodo] = useMutation(DELETE_TODO, {
+    variables: { input: { _id } },
     refetchQueries: [{ query: GET_TODOS }],
     onError: alert,
   })
@@ -64,6 +82,10 @@ const TodoItem = ({ _id, description, isDone }) => {
         html={text.current}
         onChange={handleChange}
       />
+
+      <DeleteButton onClick={deleteTodo}>
+        ✕
+      </DeleteButton>
     </Box>
   )
 }

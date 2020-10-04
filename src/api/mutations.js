@@ -19,3 +19,13 @@ export const CREATE_TODO = gql`
     }
   }
 `;
+
+export const DELETE_TODO = gql`
+  mutation DeleteTodo($input: DeleteTodoInput!) {
+    deleteTodo(input: $input) {
+      _id
+      description
+      isDone
+    }
+  }
+`;
