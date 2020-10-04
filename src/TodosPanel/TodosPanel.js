@@ -14,6 +14,7 @@ const Panel = styled.div({
   width: 300,
   border: '1px solid black',
   overflowY: 'auto',
+  marginRight: 24,
 });
 
 const TopBar = styled.div({

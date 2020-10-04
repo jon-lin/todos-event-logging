@@ -9,3 +9,18 @@ export const GET_TODOS = gql`
     }
   }
 `;
+
+export const GET_EVENTS = gql`
+  query GetEvents {
+    events {
+      _id 
+      timestamp 
+      userId  
+      username  
+      action  
+      entityId  
+      deltas  
+    }
+  }
+`;
+

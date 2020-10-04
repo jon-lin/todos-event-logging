@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import TodosPanel from './TodosPanel';
+import HistoryPanel from './HistoryPanel';
 import UserToggle from './UserToggle';
 import './index.css';
 
@@ -48,6 +49,7 @@ const App = () => {
       <TodosPage>
         <UserToggle />
         <TodosPanel />
+        <HistoryPanel />
       </TodosPage>
     </ApolloProvider>
   );
