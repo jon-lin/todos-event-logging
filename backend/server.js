@@ -2,6 +2,10 @@ const { MongoClient } = require('mongodb');
 const { ApolloServer, gql } = require('apollo-server');
 
 const Todo = require('./Todo')
+const TodoCreateEvent = require('./TodoCreateEvent')
+const TodoUpdateEvent = require('./TodoUpdateEvent')
+const TodoDeleteEvent = require('./TodoDeleteEvent')
+const EventProcessor = require('./Event/EventProcessor')
 
 const typeDefs = gql`
   type Query {
@@ -41,25 +45,80 @@ const resolvers = {
   },
   Mutation: {
     createTodo: async (parent, args, context, info) => {
-      const { db } = context
-      const todo = await Todo.init({ data: {}, db })
-      return todo.create(null, new Date())
+      const { db, mongoClient, username, userId } = context
+
+      let createdTodo
+
+      // const session = mongoClient.startSession()
+
+      // await session.withTransaction(async () => {
+        const todo = await Todo.init({ 
+          data: { description: '', isDone: false }, 
+          db,
+        })
+
+        const creationEvent = new TodoCreateEvent({ username, userId }, todo)
+
+        const eventProc = new EventProcessor()
+
+        createdTodo = await eventProc.process({
+          event: creationEvent,
+          db,
+          session: null,
+        })
+      // })
+      
+      return createdTodo
     },
     updateTodo: async (parent, args, context, info) => {
       const { input: { _id, description, isDone } } = args
-      const { db } = context
+      const { db, mongoClient, username, userId } = context
 
-      const todo = await Todo.init({ 
-        data: { _id, description, isDone },
-        db,
-      })
+      let updatedTodo
 
-      return todo.update(null, new Date())
+      // const session = mongoClient.startSession()
+
+      // await session.withTransaction(async () => {
+        const todo = await Todo.init({
+          data: { _id, description, isDone },
+          db,
+        })
+
+        const revisionEvent = new TodoUpdateEvent({ username, userId }, todo)
+
+        const eventProc = new EventProcessor()
+
+        updatedTodo = await eventProc.process({
+          event: revisionEvent,
+          db,
+          session: null,
+        })
+      // })
+
+      return updatedTodo
     },
     deleteTodo: async (parent, { input: { _id } }, context, info) => {
-      const { db } = context
-      const todo = await Todo.init({ data: { _id }, db })
-      return todo.delete()
+      const { db, mongoClient, username, userId } = context
+
+      let deletedTodo
+
+      // const session = mongoClient.startSession()
+
+      // await session.withTransaction(async () => {
+        const todo = await Todo.init({ data: { _id }, db })
+
+        const deletionEvent = new TodoDeleteEvent({ username, userId }, todo)
+
+        const eventProc = new EventProcessor()
+
+        deletedTodo = await eventProc.process({
+          event: deletionEvent,
+          db,
+          session: null,
+        })
+      // })
+      
+      return deletedTodo
     },
   }
 };
@@ -76,6 +135,7 @@ MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true }, (
       const { username, userId } = JSON.parse(req.headers.user_info)
       
       return {
+        mongoClient: client,
         db: client.db('todos_app'),
         username, 
         userId,
