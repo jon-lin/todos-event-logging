@@ -1,6 +1,8 @@
 # Todos With Event Logging
 
-A todos app souped up with granular event logging using the following technologies and following Martin Fowler's thoughts on [event sourcing](https://www.martinfowler.com/eaaDev/EventSourcing.html):
+This demo app represents taking an existing CRUD application (the todos app [here](https://github.com/jon-lin/todos)) and adding event logging to it.
+
+This app uses the following technologies and follows Martin Fowler's thoughts on [event sourcing](https://www.martinfowler.com/eaaDev/EventSourcing.html):
 - MongoDB
 - Apollo GraphQL
 - React 16 (via create-react-app)
