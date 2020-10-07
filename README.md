@@ -1,5 +1,7 @@
 # Todos With Event Logging
 
+![todos event logging demo](./todos_event_logging_demo.gif)
+
 This demo app represents taking an existing CRUD application (the todos app [here](https://github.com/jon-lin/todos)) and adding event logging to it.
 
 This app uses the following technologies and follows Martin Fowler's thoughts on [event sourcing](https://www.martinfowler.com/eaaDev/EventSourcing.html):
