@@ -13,7 +13,7 @@
     "graphql": "^15.3.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-type-json": "^0.3.2",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "mongodb": "^3.6.2",
     "nodemon": "^2.0.4",
     "react": "^16.13.1",
